@@ -1,0 +1,18 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 1, 2023, 1:11:20 AM
+    Author     : mahdi
+*/
+
+.CustomButton {
+    background-color: #6ab7ff; 
+    color: white; 
+    padding: 5mm; 
+    border-radius: 5mm; 
+}
+.red-label {
+    color: red; /* Red text color */
+}
