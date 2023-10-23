@@ -60,19 +60,15 @@ public class MyApplication {
         }
         String  url = "http://localhost/Gstore/Test.txt"; 
         Form hi = new Form("Hi World", BoxLayout.y());
-        //Prepartion de la cnx
         ConnectionRequest con = new ConnectionRequest();
-        //url auquelle on va se connecter
         con.setUrl(url);
-        //Création d'un listener sur la réponse pour récuperer la réposne du serveur sous format text sauf que on la récupere sous la form d'un tableu de bite
-        //dans un constructeur de la class string afin de le converitr on une chaine de caractére
         con.addResponseListener(e->{
         String reponse = new String(con.getResponseData());
         hi.add(reponse);
         });
-        //Afin de faire l'etablissement de conexion
         NetworkManager.getInstance().addToQueueAndWait(con);
         hi.show();
+        //
     }
 
     public void stop() {
