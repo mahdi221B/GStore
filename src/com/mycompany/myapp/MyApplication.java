@@ -61,7 +61,6 @@ public class MyApplication {
         String  url = "http://localhost/Gstore/dmc5.jpg"; 
         Form hi = new Form("Hi World", BoxLayout.y());
         EncodedImage enc = EncodedImage.createFromImage(theme.getImage("load.png"), false);
-        //Création de l'image a partir du serveur
         URLImage urlImg = URLImage.createToStorage(enc, "test"+url, url);
         ImageViewer imgViewer = new ImageViewer(urlImg);
         hi.add(imgViewer);
