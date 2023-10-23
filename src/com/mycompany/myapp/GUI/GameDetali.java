@@ -4,7 +4,7 @@
  */
 package com.mycompany.myapp.GUI;
 
-import Entite.Game;
+import com.mycompany.myapp.Entite.Game;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;

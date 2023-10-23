@@ -6,6 +6,7 @@ import com.codename1.ui.Image;
 import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.myapp.Service.LoginService;
 
 /**
  *
@@ -19,6 +20,7 @@ public class SignUp extends Form{
     private Button forgetPassBtn;
     private Image img;
     private ImageViewer imgV;
+    private LoginService loginService = new LoginService() ;
     
     public SignUp(Resources theme) {
        this.setLayout(BoxLayout.y());
@@ -41,8 +43,14 @@ public class SignUp extends Form{
        
        
        loginBtn.addActionListener(e -> {
-           GameList gameList = new GameList(theme);
-           gameList.show();
+           Boolean login = loginService.login(email.getText(), password.getText());
+           if (login == true) {
+                GameList gameList = new GameList(theme);
+                gameList.show();
+                System.out.println("loged in");
+           } else {
+                System.out.println("Authentification failed");
+           }
        });
        inscriBtn.addActionListener(e -> {
            SignIn sig = new SignIn(theme);
