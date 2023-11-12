@@ -1,75 +1,140 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.myapp.GUI;
 
+import com.codename1.components.ImageViewer;
 import com.codename1.db.Cursor;
 import com.codename1.db.Database;
 import com.codename1.db.Row;
+import static com.codename1.io.Util.cleanup;
+import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
+import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.events.SelectionListener;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.list.DefaultListModel;
+import com.codename1.ui.list.MultiList;
 import com.codename1.ui.util.Resources;
 import com.mycompany.myapp.Entite.Game;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- *
- * @author mahdi
- */
 public class Panier extends Form {
 
+    ArrayList<Game> gamesList = new ArrayList<>();
     EncodedImage enc;
     Image img = null;
-    Database db = null;
-    ArrayList<Game> listGame;
+    Form f;
+   // int counter = 0;
+    private Resources theme;
+    private static ArrayList<Game> basket = new ArrayList<>();
 
     public Panier(Resources theme) {
-       this.setLayout(BoxLayout.y());
-       Toolbar tb = new Toolbar();
-       this.setToolbar(tb);
-       tb.setTitle("panier");
+   
+        Toolbar tb = new Toolbar();
+        setToolbar(tb);
+        tb.addCommandToLeftBar("Back", null, e -> new GameMultiList(theme).showBack());
+
         try {
-            db = Database.openOrCreate("G-store.db");
+            Database db = Database.openOrCreate("G-Store.db");
+            Cursor cur = db.executeQuery("SELECT * FROM games");
+
+            //  Cursor cursor = database.executeQuery("SELECT * FROM games");
+            while (cur.next()) {
+                String name = cur.getRow().getString(0);
+                String price = cur.getRow().getString(1);
+                String urlImg = cur.getRow().getString(2);
+              
+                Game game = new Game(name, Float.parseFloat(price), urlImg);
+                Collections.addAll(gamesList, game);
+
+            }
+
         } catch (IOException ex) {
             System.out.println(ex);
         }
-        listGame = listGame();
-        System.out.println(listGame);
-        //listGame.forEach(e -> System.out.println(e));
+        f = new Form("G-Store Esprit", BoxLayout.y());
+        for (Game game : gamesList) {
+            addItem(game, theme);
+          
+        }
+        add(f);
+    }
+public void deleteItem(String itemName) {
+    try {
+        Database.openOrCreate("G-Store.db").execute("delete from games where name = '" + itemName + "'");
+        Dialog.show("Success", "Item deleted", "OK", null);
+
+        
+        for (int i = 0; i < gamesList.size(); i++) {
+            Game game = gamesList.get(i);
+            if (game.getName().equals(itemName)) {
+                gamesList.remove(i);
+                break; 
+            }
+        }
+
+        refreshForm();
+
+    } catch (IOException ex) {
+        System.out.println("Error: " + ex);
+    }
+}
+
+public void refreshForm() {
+    f.removeAll(); 
+
+    for (Game game : gamesList) {
+        addItem(game, theme);
+    
     }
 
-    public ArrayList<Game> listGame() {
+ f.refreshTheme();
+}
+
+    public void addItem(Game game, Resources theme) {
+        ImageViewer img = null;
+        Container c1 = new Container(new BoxLayout(BoxLayout.X_AXIS));
         try {
-            Cursor cur = db.executeQuery("select * from GAMES");
-            System.out.println("Games selected");
-            while (cur.next()) {
-                Row row = cur.getRow();
-                String name = row.getString(0);
-                String price = row.getString(1);
-                String url = row.getString(2);
-                Game g = new Game(name, Float.parseFloat(price), url);
-                listGame.add(g);
-                System.out.println("Game added to the list");
-            }
+            img = new ImageViewer(Image.createImage(game.getImg()));
+
         } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println("err" + ex.getMessage());
         }
-        return listGame;
+        Container c2 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+
+        Label name = new Label(game.getName());
+
+        Label price = new Label(game.getPrice() + " TND");
+
+        //ajouter les label pour note contaier sur laxe de y
+        c2.add(name);
+        c2.add(price);
+        // ajouter notre image et lautre container sur laxe de x
+        c1.add(img);
+        c1.add(c2);
+        name.addPointerPressedListener((ActionListener) (ActionEvent evt) -> {
+            String itemNameToDelete = name.getText();
+    deleteItem(itemNameToDelete);
+              
+
+        });
+        // ajouter le container c1 pour notre form f 
+        f.add(c1);
+
+        f.refreshTheme(true);
+
     }
     
-    public Image getImage(String url){
-        try {
-            enc = EncodedImage.create("/load.png");
-        }
-        catch (IOException ex){
-        }
-        img = URLImage.createToStorage(enc, "test"+url, url);
-        return img;
-     }
+
 }
