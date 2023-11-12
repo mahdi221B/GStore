@@ -19,6 +19,12 @@ public class Game {
         this.price = price;
         this.url = url;
     }
+    
+    public Game(String name, float price, String url) {
+        this.name = name;
+        this.price = price;
+        this.url = url;
+    }
 
     public String getName() {
         return name;

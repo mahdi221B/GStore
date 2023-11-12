@@ -5,8 +5,10 @@
 package com.mycompany.myapp.GUI;
 import com.mycompany.myapp.Entite.Game;
 import com.codename1.components.SpanLabel;
+import com.codename1.db.Database;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -59,6 +61,14 @@ public class GameDetali extends Form{
         Container buttonContainer = new Container(new FlowLayout(CENTER));
         btn = new Button("Buy");
         buttonContainer.add(btn);
+        btn.addActionListener(e -> {
+            saveGameToDataBase(game);
+            if (Dialog.show("succes", "Game ajoutée avec succé", "okAndGoBack", "cancelAndExit")){
+                new GameMultiList(theme);
+            }else{
+                Display.getInstance().exitApplication();
+            }
+        });
         LayeredLayout ll = new LayeredLayout();
         setLayout(ll);
         this.add(content);
@@ -66,4 +76,26 @@ public class GameDetali extends Form{
 
         ll.setInsets(buttonContainer, "auto auto 0 auto");
     }
+    public void saveGameToDataBase (Game game) {
+        Database db = null;
+        try {
+            db= Database.openOrCreate("G-store.db");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        
+        try {
+            db.execute("create table if not exists GAMES (name varchar(100), price varchar(100), imageUrl varchar(100));");
+            System.out.println("Table crée");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        
+        try {
+            db.execute("insert into GAMES (name, price, imageUrl) values('"+game.getName()+"','"+game.getPrice()+"','"+game.getUrl()+"')");
+            System.out.println("Game ajouté");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    } 
 }

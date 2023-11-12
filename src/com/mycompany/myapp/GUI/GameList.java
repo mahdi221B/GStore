@@ -72,7 +72,7 @@ public class GameList extends Form {
         return c1;
      }
      
-     public Image getImage(String url){
+    public Image getImage(String url){
          EncodedImage enc= null;
         try {
             enc = EncodedImage.create("/load.png");

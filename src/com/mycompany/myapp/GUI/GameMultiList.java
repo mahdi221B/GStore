@@ -38,8 +38,8 @@ public class GameMultiList extends Form{
       Toolbar tb =new Toolbar();
       setToolbar(tb);
       tb.addMaterialCommandToSideMenu("accueil", FontImage.MATERIAL_ACCESS_ALARM,  (e) ->new SignUp(theme).showBack());
-      // tb.addMaterialCommandToSideMenu("panier", FontImage.MATERIAL_SHOPPING_BASKET,  (e) ->  new Paniers(theme).showBack());
-      //tb.addCommandToLeftBar("List view",null, (e) -> new GamesList(theme).showBack());
+      tb.addMaterialCommandToOverflowMenu("panier", FontImage.MATERIAL_SHOPPING_BASKET,  (e) ->  new Panier(theme).showBack());
+      //tb.ad   dCommandToLeftBar("List view",null, (e) -> new GamesList(theme).showBack());
       
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         Game game1 = new Game("Devil May Cry 5", 200, "/dmc5.jpg", "Even with the best gameplay footage and screenshots to entice players to dive deeper on your game page, you can’t just stick a basic marketplace description and count on the visuals to pull more than their fair share of the weight to convince players to choose your game.","http://localhost/Gstore/dmc5.jpg");
