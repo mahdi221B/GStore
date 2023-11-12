@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.myapp.GUI;
-
 import com.mycompany.myapp.Entite.Game;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
@@ -19,7 +18,6 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
-
 /**
  *
  * @author mahdi
@@ -35,7 +33,7 @@ public class GameDetali extends Form{
        Toolbar tb = new Toolbar();
        this.setToolbar(tb);
        tb.setTitle(game.getName());
-       tb.addCommandToLeftBar("back",null,ev-> new GameList(theme).showBack());
+       tb.addCommandToLeftBar("back",null,ev-> new GameMultiList(theme).showBack());
        
        Container content = new Container(BoxLayout.y());
         try {

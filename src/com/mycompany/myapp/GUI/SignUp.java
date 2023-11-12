@@ -45,7 +45,8 @@ public class SignUp extends Form{
        loginBtn.addActionListener(e -> {
            Boolean login = loginService.login(email.getText(), password.getText());
            if (login == true) {
-                GameList gameList = new GameList(theme);
+                //GameList gameList = new GameList(theme);
+                GameMultiList gameList = new GameMultiList(theme);
                 gameList.show();
                 System.out.println("loged in");
            } else {
